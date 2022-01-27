@@ -22,6 +22,28 @@ const articleSchema = new mongoose.Schema({
 
 const Article = mongoose.model("Article", articleSchema);
 
+
+//GET
+app.get("/articles", function(req, res){
+    //READ
+    Article.find({}, function(err, foundArticles){
+        if(!err){
+            res.send(foundArticles);
+        } else {
+            res.send(err);
+        }
+        
+    })
+})
+
+//POST
+app.post("/articles", function(req, res){
+    console.log(req.body.title);
+    console.log(req.body.content);
+})
+
+
+
 app.listen(3000, function() {
     console.log("Wiki-API: server running on port 3000");
 })
