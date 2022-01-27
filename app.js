@@ -23,22 +23,23 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 
+//REQUESTS TARGETING ALL ARTICLES
 app.route("/articles")
     //GET ------------------------------------------
-    .get("/articles", function(req, res){
-    //READ
-    Article.find({}, function(err, foundArticles){
-        if(!err){
-            res.send(foundArticles);
-        } else {
-            res.send(err);
-        }
-    });
+    .get(function(req, res){
+        //READ
+        Article.find({}, function(err, foundArticles){
+            if(!err){
+                res.send(foundArticles);
+            } else {
+                res.send(err);
+            }
+        })
     })
 
     //POST -----------------------------------------
     .post(function(req, res){
-        onsole.log(req.body.title);
+        console.log(req.body.title);
         console.log(req.body.content);
 
     //CREATE
@@ -65,6 +66,21 @@ app.route("/articles")
                 res.send(err);
             }
         })
+    });
+
+//REQUESTS TARGETING SPECIFIC ARTICLES
+app.route("/articles/:articleTitle")
+    .get(function(req, res){
+        const articleTitle = req.params.articleTitle;
+
+        Article.findOne({title: articleTitle}, function(err, foundArticle){
+            if(foundArticle){
+                res.send(foundArticle);
+            } else {
+                res.send("No article found matching this title");
+            }
+        })
+
     });
 
 
