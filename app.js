@@ -81,6 +81,20 @@ app.route("/articles/:articleTitle")
             }
         })
 
+    })
+
+    .put(function(req, res){
+        Article.updateOne(
+            {title: req.params.articleTitle}, 
+            {title: req.body.title, content: req.body.content},
+            
+            function(err){
+                if (!err) {
+                    res.send("Succesfully updated the " + req.params.articleTitle + " article.");
+                } else {
+                    res.send(err);
+                }
+            })
     });
 
 
