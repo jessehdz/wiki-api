@@ -14,8 +14,8 @@ mongoose.connect("mongodb://localhost:27017/wikiDB");
 //articles schema ----------------------------------------------------
 const articleSchema = new mongoose.Schema({
     title: {
-      type: String,
-      required: "Title is missing. Please add a title to continue."
+        type: String,
+        required: "Title is missing. Please add a title to continue."
     },
     content: String
 }); 
@@ -23,8 +23,9 @@ const articleSchema = new mongoose.Schema({
 const Article = mongoose.model("Article", articleSchema);
 
 
-//GET
-app.get("/articles", function(req, res){
+app.route("/articles")
+    //GET ------------------------------------------
+    .get("/articles", function(req, res){
     //READ
     Article.find({}, function(err, foundArticles){
         if(!err){
@@ -32,14 +33,13 @@ app.get("/articles", function(req, res){
         } else {
             res.send(err);
         }
-        
+    });
     })
-})
 
-//POST
-app.post("/articles", function(req, res){
-    console.log(req.body.title);
-    console.log(req.body.content);
+    //POST -----------------------------------------
+    .post(function(req, res){
+        onsole.log(req.body.title);
+        console.log(req.body.content);
 
     //CREATE
     const newArticle = new Article ({
@@ -54,18 +54,18 @@ app.post("/articles", function(req, res){
             res.send(err);
         }
     });
-})
-
-//DELETE
-app.delete("/articles", function(req, res){
-    Article.deleteMany({}, function(err){
-        if(!err) {
-            res.send("Succesfully deleted all articles");
-        } else {
-            res.send(err);
-        }
     })
-})
+
+    //DELETE ---------------------------------------
+    .delete(function(req, res){
+        Article.deleteMany({}, function(err){
+            if(!err) {
+                res.send("Succesfully deleted all articles");
+            } else {
+                res.send(err);
+            }
+        })
+    });
 
 
 app.listen(3000, function() {
