@@ -70,6 +70,7 @@ app.route("/articles")
 
 //REQUESTS TARGETING SPECIFIC ARTICLES
 app.route("/articles/:articleTitle")
+    //READ
     .get(function(req, res){
         const articleTitle = req.params.articleTitle;
 
@@ -83,6 +84,7 @@ app.route("/articles/:articleTitle")
 
     })
 
+    //UPDATE
     .put(function(req, res){
         Article.updateOne(
             {title: req.params.articleTitle}, 
@@ -95,8 +97,21 @@ app.route("/articles/:articleTitle")
                     res.send(err);
                 }
             })
-    });
+    })
 
+    //MODIFY(UPDATE)
+    .patch(function(req, res){
+        Article.updateOne(
+            {title: req.params.articleTitle}, 
+            {$set: req.body}, 
+            function(err){
+                if (!err) {
+                    res.send("Succesfully updated the " + req.params.articleTitle + " article.");
+                } else {
+                    res.send(err);
+                }
+            })
+    });
 
 app.listen(3000, function() {
     console.log("Wiki-API: server running on port 3000");
